@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Hour Tracker</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    </head>
+    <style>
+    h1 {text-align: center;}
+    div {text-align: center;}
+    nav {text-align: center;}
+    </style>
+    <body class="bg-light">
+        <div class="container">
+            <div class="jumbotron mt-5">
+                <h1>Hour Tracker App</h1>
+                <nav class="navbar navbar-dark bg-dark">
+                    <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000">Add Date</a>
+                    <a class="nav-link active" aria-current="page" href="#">Calculate Total</a>
+                    <a class="nav-link active" aria-current="page" href="#">Calculate Selected Dates</a>
+                    <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000/seeDateAll">See All Dates</a>                </nav>            
+            </div>
+            <div class="jumbotron mt-5">
+                <form method="POST" action="/">
+                    <label class="align-top" for="date"> Date:</label>
+                    <input type="date" id="shift" name="date">
+                    <label class="align-top" for="time_in"> Time In:</label>
+                    <input type="time" name="time_in">
+                    <label label class="align-top" for="time_out"> Time Out:</label>
+                    <input type="time" name="time_out">
+                    <input type="submit" value="Add">
+                </form>
+                {% if "already used" in alert %}
+                    <div class="alert alert-danger" role="alert">
+                        {{alert}}
+                    </div>
+                {% endif %}
+                {% if "Successfully added" in alert %}
+                    <div class="alert alert-success" role="alert">
+                        {{alert}}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+    </body>
+</html>
