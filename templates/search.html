@@ -29,14 +29,14 @@
             <div class="jumbotron mt-3">
                 <h1>{{variable}}</h1>
                 <br>
-                <form method="POST" action="/edit">
-                    <label class="align-top" for="time_in">{{variable1}}</label>
-                    <input type="time" name="time_in">
-                    <label label class="align-top" for="time_out">{{variable2}}</label>
-                    <input type="time" name="time_out">
-                    <input type="submit" value="Edit">
-                </form>
-                <p>Edit the times incase you messed up or just leave it be</p>
+                <table class="table">
+                    <tr>
+                        <th>Time In</th><th>Time Out</th>
+                    </tr>
+                    <tr>
+                        <td>{{variable1}}</td><td>{{variable2}}</td>
+                    </tr>
+                </table>
             </div>    
 
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
