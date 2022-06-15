@@ -7,7 +7,6 @@ Date: May 26, 2022
 
 import sqlite3
 from pathlib import Path
-from tkinter import Variable
 from flask import Flask, render_template, request, redirect
 
 # --- GLOBAL VARIABLES --- #
@@ -44,10 +43,10 @@ def index():
 
 @app.route('/addAll', methods=['GET', 'POST'])
 def addAll():
-    """_summary_
+    """Calculates the total hours from the database
 
     Returns:
-        _type_: _description_
+        int: Total amount of hours
     """
     DATA = getAllDates()
     ALERT = ""
@@ -60,16 +59,20 @@ def addAll():
 
     return render_template("index.html", alert=ALERT)
 
-@app.route('/search', methods=["POST"])
+@app.route('/search', methods=['POST'])
 def search():
+    """searches for the timestamp within the database
+
+    Returns:
+        str: Date
+    """
     if request.form:
         SEARCH = request.form.get("searching")
         if getOneDate(SEARCH) is None:
             return redirect("/seeDateAll")
         else:
             TIME_IN, TIME_OUT = getTime(SEARCH)
-            edit(SEARCH)
-            return render_template("search.html", variable1=TIME_IN, variable2=TIME_OUT, variable=SEARCH)
+            return render_template("search.html", variable1=TIME_IN, variable2=TIME_OUT, variable=SEARCH)      
 
 @app.route('/seeDateAll', methods=['GET', 'POST'])
 def seeAll():
@@ -81,69 +84,19 @@ def seeAll():
 
 @app.route('/delete/<id>')
 def deleteDatePage(id):
+    """Deletes the data from the database
+
+    Args:
+        id (str): The id of the timestamp
+
+    Returns:
+        redirect: Redirects the page
+    """
     deleteDate(id)
     return redirect('/seeDateAll')
 
-@app.route('/edit', methods=['GET', 'POST'])
-def edit(SEARCH):
-    """
-    """
-    ALERT = ""
-    if request.form:
-        ID = SEARCH
-        updateTimes(ID)
-        ALERT = f"Successfully updated {SEARCH} You did it :D"
-
-    return render_template("search.html", alert=ALERT)
-# --- DATA BASE --- #
-
 ### --- INPUTS --- ###
-def updateTimes(ID):
-    """_summary_
-
-    Returns:
-        _type_: _description_
-    """
-    global DB_NAME
-    CONNECTION = sqlite3.connect(DB_NAME)
-    CURSOR = CONNECTION.cursor()
-    TIME = CURSOR.execute('''
-            SELECT
-                time_in,
-                time_out
-            FROM
-                times
-            WHERE
-                date = ?
-    ;''', [ID]).fetchone()
-
-    TIME_IN = request.form.get("time_in")
-    TIME_OUT = request.form.get("time_out")
-
-    INFO = (TIME_IN, TIME_OUT)
-    INFO = list(INFO)
-    NEW_INFO = []
-
-    for i in range(len(INFO)):
-        if INFO[i] == "":
-            NEW_INFO.append(TIME[i])
-        else:
-            NEW_INFO.append(INFO[i])
-
-    NEW_INFO.append(ID)
-
-    CURSOR.execute('''
-        UPDATE
-            times
-        SET
-            time_in = ?,
-            time_out = ?
-        WHERE
-            date = ?
-    ;''', NEW_INFO)
-
-    CONNECTION.commit()
-
+# --- DATA BASE --- #
 def createTimes(DATE, TIME_I, TIME_O):
     """Creates a section to add to the database
 
@@ -154,19 +107,15 @@ def createTimes(DATE, TIME_I, TIME_O):
     """
     global DB_NAME
 
-    try:
-        CONNECTION = sqlite3.connect(DB_NAME)
-        CURSOR = CONNECTION.cursor()
-        CURSOR.execute('''
-                INSERT INTO
-                    times
-                VALUES(
-                    ?, ?, ?
-                )
-        ;''', [DATE, TIME_I, TIME_O])
-
-    except:
-        pass
+    CONNECTION = sqlite3.connect(DB_NAME)
+    CURSOR = CONNECTION.cursor()
+    CURSOR.execute('''
+            INSERT INTO
+                times
+            VALUES(
+                ?, ?, ?
+            )
+    ;''', [DATE, TIME_I, TIME_O])
 
     CONNECTION.commit()
     CONNECTION.close()
@@ -211,7 +160,7 @@ def addAll(DATA):
     """Adds data together
 
     Returns:
-        int: 
+        int: Total Amount
     """
 
     NUM_1 = []
@@ -257,7 +206,6 @@ def addAll(DATA):
         
     return TOTAL
 
-
 ### --- OUTPUTS --- ###
 def getOneDate(DATE):
     """Query and return a single date from the database
@@ -300,10 +248,13 @@ def getAllDates():
     return TIMES
 
 def getTime(TIME):
-    """Query and return a single date from the database
+    """Query and returns the time in and out from the database
 
     Args:
-        DATE (str): 
+        TIME (str): ID
+
+    Returns:
+        int: Times in and out
     """
     global DB_NAME
     CONNECTION = sqlite3.connect(DB_NAME)
@@ -325,7 +276,6 @@ def getTime(TIME):
             WHERE
                 date = ?
     ;''', [TIME]).fetchone()
-    CONNECTION.close()
 
     L_TIME_IN = list(R_TIME_IN)
     L_TIME_OUT = list(R_TIME_OUT)
