@@ -10,17 +10,24 @@
     div {text-align: center;}
     nav {text-align: center;}
     </style>
-    <body class="bg-light">
-        <div class="container">
-            <div class="jumbotron mt-5">
-                <h1>Hour Tracker App</h1>
-                <nav class="navbar navbar-dark bg-dark">
-                    <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000">Add Date</a>
-                    <a class="nav-link active" aria-current="page" href="#">Calculate Total</a>
-                    <a class="nav-link active" aria-current="page" href="#">Calculate Selected Dates</a>
-                    <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000/seeDateAll">See All Dates</a>                </nav>            
+    <body class="bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand">Hour Tracker</a> 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>   
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Add Date & Calculate Total</a>
+                    <a class="nav-link active" aria-current="page" href="http://127.0.0.1:5000/seeDateAll">See All Dates</a>                        
+                </div>
             </div>
+        </div>
+        </nav>
             <div class="jumbotron mt-5">
+                <h5>Note: You can only use one day per set of time, you cannot use the same day for a different set of time</h5>
+                <br>
                 <form method="POST" action="/">
                     <label class="align-top" for="date"> Date:</label>
                     <input type="date" id="shift" name="date">
@@ -30,17 +37,36 @@
                     <input type="time" name="time_out">
                     <input type="submit" value="Add">
                 </form>
-                {% if "already used" in alert %}
-                    <div class="alert alert-danger" role="alert">
-                        {{alert}}
-                    </div>
-                {% endif %}
-                {% if "Successfully added" in alert %}
-                    <div class="alert alert-success" role="alert">
-                        {{alert}}
-                    </div>
-                {% endif %}
+            {% if "You didn't" in alert %}
+                <div class="alert alert-danger" role="alert">
+                    {{alert}}
+                </div>
+            {% endif %}
+            {% if "already used" in alert %}
+                <div class="alert alert-danger" role="alert">
+                    {{alert}}
+                </div>
+            {% endif %}
+            {% if "Successfully added" in alert %}
+                <div class="alert alert-success" role="alert">
+                    {{alert}}
+                </div>
+            {% endif %}
+            {% if "You have an overall total of" in alert %}
+                <div class="alert alert-success" role="alert">
+                    {{alert}}
+                </div>
+            {% endif %}
+            {% if "There is no added data to calculate." in alert %}
+                <div class="alert alert-danger" role="alert">
+                    {{alert}}
+                </div>
+            {% endif %}
+            <br>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <a href="/addAll" class="btn btn-outline-success btn-lg">Add All</a>
             </div>
+            <br>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
